@@ -16,4 +16,5 @@ public class ConfigTest {
         Configuration configuration = XMLConfigBuilder.loadConfiguration(resource);
         System.out.println(configuration);
     }
+
 }
