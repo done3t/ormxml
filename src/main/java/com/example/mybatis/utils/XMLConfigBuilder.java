@@ -1,4 +1,4 @@
-package com.example.mybatis;
+package com.example.mybatis.utils;
 
 import com.example.io.Resources;
 import com.example.mybatis.annoation.Select;
