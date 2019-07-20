@@ -1,16 +1,21 @@
 package com.example.test;
 
+import com.example.dao.IUserDao;
 import com.example.domain.User;
 import com.example.io.Resources;
+import com.example.mybatis.cfg.Configuration;
+import com.example.mybatis.cfg.Mapper;
+import com.example.mybatis.sqlsession.SqlSession;
+import com.example.mybatis.sqlsession.SqlSessionFactory;
+import com.example.mybatis.sqlsession.SqlSessionFactoryBuilder;
 import com.example.mybatis.utils.DataSourceUtil;
 import com.example.mybatis.utils.Executor;
 import com.example.mybatis.utils.XMLConfigBuilder;
-import com.example.mybatis.cfg.Configuration;
-import com.example.mybatis.cfg.Mapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.util.List;
@@ -57,5 +62,20 @@ public class ConfigTest {
         for (User user : users) {
             System.out.println(user.getUsername());
         }
+    }
+
+    @Test
+    public void testMain() throws IOException {
+        InputStream resourceAsStream = Resources.getResourceAsStream("SqlMapConfig.xml");
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        SqlSessionFactory factory = builder.build(resourceAsStream);
+        SqlSession sqlSession = factory.openSession();
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+        List<User> users = userDao.findAll();
+        for (User user : users) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+        resourceAsStream.close();
     }
 }
